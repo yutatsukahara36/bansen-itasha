@@ -10,8 +10,8 @@ import { InquiryForm } from "@/components/sponsor/InquiryForm";
 import { spotById } from "@/data/spots";
 
 export const metadata: Metadata = {
-  title: "企業の方はこちら / デジタル番宣痛車",
-  description: "全40枠の価格表、ローンチパートナーと通常スポンサーの違い、よくある質問、お問い合わせ。",
+  title: "宣伝したい方はこちら / デジタル番宣痛車",
+  description: "全40枠の価格表、2つの入り方、よくある質問、お問い合わせ。企業も、ブランドも、個人も。",
 };
 
 export default async function SponsorPage({ searchParams }: { searchParams: Promise<{ spot?: string }> }) {
@@ -23,9 +23,9 @@ export default async function SponsorPage({ searchParams }: { searchParams: Prom
       <main className="w-full max-w-full overflow-x-hidden">
         <Section>
           <Reveal>
-            <h1 className="max-w-[16em] font-display text-[clamp(34px,5vw,64px)] leading-[1.1]">企業の方はこちら</h1>
+            <h1 className="max-w-[16em] font-display text-[clamp(34px,5vw,64px)] leading-[1.1]">宣伝したい方はこちら</h1>
             <p className="mt-6 max-w-[40em] text-[18px] font-bold text-ink-soft">
-              全40枠、固定価格、先着、恒久掲載。40枠中35枠が¥100,000未満なので、面白がった担当者がその場で決められます。
+              企業も、ブランドも、個人も。全40枠、固定価格、先着、恒久掲載。40枠中35枠が¥100,000未満なので、面白がった担当者がその場で決められます。
             </p>
           </Reveal>
         </Section>
@@ -41,7 +41,7 @@ export default async function SponsorPage({ searchParams }: { searchParams: Prom
           <Reveal>
             <h2 className="font-display text-[clamp(28px,3.4vw,44px)] leading-[1.15]">2つの入り方</h2>
             <p className="mb-8 mt-4 max-w-[40em] text-[16px] font-bold text-ink-soft">
-              最初に動いてくださった5社には、非売品の小枠を無償で提供しています。後から知ると「えこひいき」になるので、最初に書いておきます。
+              最初に動いてくださった5社には、非売品の小枠を無償で提供します。後から知ると「えこひいき」になるので、最初に書いておきます。
             </p>
           </Reveal>
           <Options />

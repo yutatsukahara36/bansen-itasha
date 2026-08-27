@@ -14,17 +14,20 @@ describe("spots invariant", () => {
     expect(LP_SPOTS.every((s) => s.price === 0 && !s.forSale)).toBe(true);
     expect(SPOTS.length).toBe(45);
   });
-  it("every price matches its tier", () => {
-    for (const s of SPOTS) expect(s.price).toBe(TIER_PRICE[s.tier]);
+  it("every price matches its tier, except the two ¥20,000 interior spots", () => {
+    for (const s of SPOTS) {
+      if (s.id === "shift" || s.id === "ceiling") expect(s.price).toBe(20_000);
+      else expect(s.price).toBe(TIER_PRICE[s.tier]);
+    }
   });
-  it("tier counts match 01 枠割りと価格", () => {
+  it("tier counts match the 2026-08-26 edit (6 windows, no floor mats)", () => {
     const count = (t: string) => SPOTS.filter((s) => s.tier === t).length;
     expect(count("S")).toBe(1);
     expect(count("A")).toBe(4);
     expect(count("B")).toBe(5);
-    expect(count("C")).toBe(10);
+    expect(count("C")).toBe(12);
     expect(count("D")).toBe(13);
-    expect(count("E")).toBe(7);
+    expect(count("E")).toBe(5);
   });
   it("35 of 40 spots are under ¥100,000", () => {
     expect(FOR_SALE.filter((s) => s.price < 100_000).length).toBe(35);

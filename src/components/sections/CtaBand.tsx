@@ -10,10 +10,10 @@ export function CtaBand() {
         </p>
         <div className="flex flex-wrap gap-4">
           <Button href="/sponsor" size="lg" variant="ghost" rotate={-1}>
-            企業の方々はこちら
+            宣伝したい方はこちら
           </Button>
           <Button href="/about" size="lg" variant="ghost" rotate={1}>
-            番宣痛車とは？
+            痛車とは？
           </Button>
         </div>
       </Reveal>

@@ -17,12 +17,12 @@ export function OgStage() {
       <div className="pointer-events-none absolute left-10 top-10 z-[10]">
         <div className="font-display text-[22px]">デジタル番宣痛車</div>
         <h1 className="mt-3 font-display text-[52px] leading-[1.12]">
-          アニメには番宣痛車がある。
+          誰でも宣伝できる
           <br />
-          企業には、ない。
+          番宣痛車、作ります。
         </h1>
         <p className="mt-3 text-[18px] font-bold text-ink-soft">
-          だから作ります。<span className="marker-hl">全40枠</span>、¥20,000から。
+          <span className="marker-hl">全40枠</span>、¥20,000から。企業も、ブランドも、個人も。
         </p>
       </div>
       <ProgressOverlay p={p} className="absolute bottom-8 left-10 z-[10] scale-[0.85] origin-bottom-left" />

@@ -76,10 +76,9 @@ export function drawTag(c: HTMLCanvasElement, spot: Spot) {
   ctx.fillText(spot.nameJa, W / 2, 116);
 
   if (isLP) {
+    // 非売品 only: no partner name, no count. Nothing on the car announces "0 partners".
     ctx.font = '400 128px DotGothic16, monospace';
     ctx.fillText("非売品", W / 2, 250);
-    ctx.font = '700 34px "Zen Maru Gothic", sans-serif';
-    ctx.fillText("ローンチパートナー枠", W / 2, 352);
   } else {
     const price = yen(spot.price);
     ctx.font = `400 ${price.length > 8 ? 118 : 132}px DotGothic16, monospace`;

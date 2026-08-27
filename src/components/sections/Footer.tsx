@@ -11,8 +11,8 @@ export function Footer() {
           </p>
         </div>
         <nav className="flex flex-wrap gap-x-6 gap-y-2 text-[14px] font-bold">
-          <Link href="/about">番宣痛車とは？</Link>
-          <Link href="/sponsor">企業の方はこちら</Link>
+          <Link href="/about">痛車とは？</Link>
+          <Link href="/sponsor">宣伝したい方はこちら</Link>
           <Link href="/sponsor#faq">よくある質問</Link>
           <Link href="/sponsor#inquiry">お問い合わせ</Link>
           <span className="text-ink-soft">特定商取引法に基づく表記（準備中）</span>

@@ -1,5 +1,7 @@
 import { SPOTS } from "@/data/spots";
-import { TIER_LABEL, TIER_PRICE, type Tier } from "@/data/tiers";
+import { TIER_LABEL, type Tier } from "@/data/tiers";
+import type { Spot } from "@/data/spots";
+import { yen } from "@/lib/format";
 import { SPONSORS } from "@/data/sponsors";
 import { PopTag } from "@/components/ui/PopTag";
 import { Reveal } from "@/components/ui/Reveal";
@@ -15,9 +17,14 @@ const BLOCK: Record<Tier, { span: string; size: "sm" | "md" | "lg"; bg: string; 
   B: { span: "md:col-span-6", size: "md", bg: "bg-paper", blurb: "課長決裁で通る、目立つ枠。" },
   C: { span: "md:col-span-7", size: "sm", bg: "bg-paper-2", blurb: "フェンダー、サイドスカート、サイドウィンドウ。" },
   D: { span: "md:col-span-5 md:row-span-2", size: "sm", bg: "bg-paper", blurb: "小口枠。個人でも乗れます。" },
-  E: { span: "md:col-span-7", size: "sm", bg: "bg-paper-2", blurb: "痛内装。外から見えない場所にも、ちゃんと文化があります。" },
+  E: { span: "md:col-span-7", size: "sm", bg: "bg-paper-2", blurb: "痛内装。外から見えない場所にも、ちゃんと文化があります。窓ガラスに貼って見せます。" },
   LP: { span: "md:col-span-12", size: "sm", bg: "bg-ink", blurb: "" },
 };
+
+function priceRange(spots: Spot[]) {
+  const prices = [...new Set(spots.map((s) => s.price))].sort((a, b) => a - b);
+  return prices.length === 1 ? yen(prices[0]) : `${yen(prices[0])}〜${yen(prices[prices.length - 1])}`;
+}
 
 export function PriceTable() {
   const sold = new Set(SPONSORS.map((s) => s.spotId));
@@ -33,7 +40,7 @@ export function PriceTable() {
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <h3 className="font-display text-[26px] leading-none">{TIER_LABEL[t]}</h3>
               <div className="text-[13px] font-black">
-                <span className="font-display text-[22px]">{"¥" + TIER_PRICE[t].toLocaleString("ja-JP")}</span> × {spots.length}枠　残り{remaining}
+                <span className="font-display text-[22px]">{priceRange(spots)}</span> × {spots.length}枠　残り{remaining}
               </div>
             </div>
             {b.blurb && <p className="mt-2 max-w-[40em] text-[14px] font-bold text-ink-soft">{b.blurb}</p>}
@@ -57,10 +64,9 @@ export function PriceTable() {
       <Reveal className="md:col-span-12 border-[3px] border-ink bg-ink p-5 text-yellow md:p-6">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h3 className="font-display text-[26px] leading-none">非売品 5枠</h3>
-          <div className="text-[13px] font-black">ローンチパートナー限定　残り{5 - SPOTS.filter((s) => !s.forSale && sold.has(s.id)).length}社</div>
         </div>
         <p className="mt-2 max-w-[48em] text-[14px] font-bold text-paper">
-          ワイパー、ドアハンドル、アンテナ、エンブレム周り、リアスポイラー端。お金では買えません。最初に動いてくださった5社だけに無償でお渡しします。
+          お金では買えない小さな枠が5つあります。最初に動いてくださった方に無償でお渡しします。
         </p>
       </Reveal>
     </div>

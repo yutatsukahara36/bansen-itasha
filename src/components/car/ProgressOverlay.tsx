@@ -35,9 +35,10 @@ export function ProgressOverlay({ p, className = "" }: { p: Progress; className?
       <div className="relative mt-2 h-4 border-[3px] border-ink bg-paper-2">
         <i className="absolute inset-0 bg-yellow" style={{ width: `${p.pct}%` }} />
       </div>
-      <div className="mt-3 border-t-2 border-dashed border-ink pt-2.5 text-[13px] font-bold max-md:text-[12px]">
-        ローンチパートナー　残り <b className="font-display text-[22px] font-normal">{p.lpRemaining}</b>社 / 全{p.lpTotal}社
-      </div>
+      {/* No ローンチパートナー counter: at zero partners it announces that nobody has signed (04 ディストリビューション). Partner logos render only once they exist. */}
+      {p.lpTaken > 0 && (
+        <div className="mt-3 border-t-2 border-dashed border-ink pt-2.5 text-[13px] font-bold max-md:text-[12px]">ローンチパートナー {p.lpTaken}社</div>
+      )}
     </div>
   );
 }

@@ -17,7 +17,7 @@ export const TIER_LABEL: Record<Tier, string> = {
   C: "C枠",
   D: "D枠 個人も可",
   E: "E枠 痛内装",
-  LP: "非売品 ローンチパートナー枠",
+  LP: "非売品",
 };
 
 export const TIER_ORDER: Tier[] = ["S", "A", "B", "C", "D", "E", "LP"];

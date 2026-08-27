@@ -56,12 +56,12 @@ export function Hero() {
 
       <div className="pointer-events-none absolute left-8 top-9 z-[10] max-md:left-4 max-md:right-4 max-md:top-5">
         <h1 className="max-w-[14em] font-display text-[clamp(30px,4.2vw,58px)] font-normal leading-[1.12] tracking-[0.01em] max-md:text-[clamp(24px,7.5vw,34px)]">
-          アニメには番宣痛車がある。
+          誰でも宣伝できる
           <br />
-          企業には、ない。
+          番宣痛車、作ります。
         </h1>
         <p className="mt-3.5 max-w-[28em] text-[16px] font-bold text-ink-soft max-md:text-[13px]">
-          だから作ります。<span className="marker-hl">全40枠</span>、¥20,000から。埋まったら、この姿のまま実車にします。
+          ネット上の痛車に<span className="marker-hl">全40枠</span>。¥20,000から。企業も、ブランドも、個人も。埋まったら、この姿のまま実車にします。
         </p>
       </div>
 
@@ -74,10 +74,10 @@ export function Hero() {
 
       <div className="absolute bottom-11 right-9 z-[10] flex flex-wrap gap-3.5 max-md:hidden">
         <Button href="/sponsor" size="lg" rotate={-1.2}>
-          企業の方々はこちら
+          宣伝したい方はこちら
         </Button>
         <Button href="/about" size="lg" variant="ghost" rotate={0.8}>
-          番宣痛車とは？
+          痛車とは？
         </Button>
       </div>
 
