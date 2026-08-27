@@ -4,14 +4,13 @@ import { Footer } from "@/components/sections/Footer";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { PriceTable } from "@/components/sponsor/PriceTable";
-import { Options } from "@/components/sponsor/Options";
 import { Faq } from "@/components/sponsor/Faq";
 import { InquiryForm } from "@/components/sponsor/InquiryForm";
 import { spotById } from "@/data/spots";
 
 export const metadata: Metadata = {
   title: "宣伝したい方はこちら / デジタル番宣痛車",
-  description: "全40枠の価格表、2つの入り方、よくある質問、お問い合わせ。企業も、ブランドも、個人も。",
+  description: "全40枠の価格表、よくある質問、お問い合わせ。企業も、ブランドも、個人も。",
 };
 
 export default async function SponsorPage({ searchParams }: { searchParams: Promise<{ spot?: string }> }) {
@@ -35,16 +34,6 @@ export default async function SponsorPage({ searchParams }: { searchParams: Prom
             <h2 className="mb-8 font-display text-[clamp(28px,3.4vw,44px)] leading-[1.15]">枠と価格</h2>
           </Reveal>
           <PriceTable />
-        </Section>
-
-        <Section id="options" className="border-t-[3px] border-ink bg-paper-2">
-          <Reveal>
-            <h2 className="font-display text-[clamp(28px,3.4vw,44px)] leading-[1.15]">2つの入り方</h2>
-            <p className="mb-8 mt-4 max-w-[40em] text-[16px] font-bold text-ink-soft">
-              最初に動いてくださった5社には、非売品の小枠を無償で提供します。後から知ると「えこひいき」になるので、最初に書いておきます。
-            </p>
-          </Reveal>
-          <Options />
         </Section>
 
         <Section id="faq">
