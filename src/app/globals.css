@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-yellow: oklch(92% 0.19 100);
+  --color-yellow-deep: oklch(84% 0.18 96);
+  --color-paper: oklch(98.5% 0.012 95);
+  --color-paper-2: oklch(96% 0.028 97);
+  --color-ink: oklch(21% 0.012 85);
+  --color-ink-soft: oklch(42% 0.02 85);
+  --color-shadow: oklch(55% 0.09 95 / 0.28);
+  --color-tape: oklch(97% 0.05 98 / 0.75);
+  --font-display: var(--font-dot), "Zen Maru Gothic", sans-serif;
+  --font-body: var(--font-maru), "Hiragino Maru Gothic ProN", sans-serif;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+:root {
+  --yellow: oklch(92% 0.19 100);
+  --yellow-deep: oklch(84% 0.18 96);
+  --paper: oklch(98.5% 0.012 95);
+  --paper-2: oklch(96% 0.028 97);
+  --ink: oklch(21% 0.012 85);
+  --ink-soft: oklch(42% 0.02 85);
+  --shadow: oklch(55% 0.09 95 / 0.28);
+  --tape: oklch(97% 0.05 98 / 0.75);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --z-overlay: 10;
+  --z-panel: 15;
+  --z-header: 20;
+  --z-grain: 30;
+}
+
+html { background: var(--paper); }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 500;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  -webkit-font-smoothing: antialiased;
+  text-wrap: pretty;
+}
+h1, h2, h3 { text-wrap: balance; }
+
+@layer components {
+/* paper + marker material */
+.paper {
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  box-shadow: 6px 8px 0 var(--shadow);
+}
+.tape::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 110px;
+  height: 26px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: var(--tape);
+  border: 1px solid oklch(80% 0.1 95 / 0.5);
+}
+
+.pop-btn {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 1;
+  padding: 12px 16px 11px;
+  background: var(--yellow);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  transform: rotate(var(--r, 0deg));
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.pop-btn.ghost { background: var(--paper); }
+.pop-btn.lg { font-size: 20px; padding: 16px 22px 15px; }
+.pop-btn:hover { transform: rotate(var(--r, 0deg)) translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+.pop-btn:active { transform: rotate(var(--r, 0deg)) scale(0.98); box-shadow: 2px 2px 0 var(--ink); }
+
+.marker-hl { background: var(--yellow); padding: 0 6px; color: var(--ink); }
+
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--z-grain);
+  opacity: 0.045;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.cursor-marker {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M6 26 L20 12 L26 18 L12 32 Z' fill='%23111'/><path d='M20 12 L24 8 L30 14 L26 18 Z' fill='%23FFE500' stroke='%23111' stroke-width='2'/><path d='M6 26 L5 31 L10 30 Z' fill='%23111'/></svg>") 4 28, auto;
+}
+.cursor-marker.is-hover { cursor: pointer; }
+
+.hint-dot::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  vertical-align: -1px;
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pop-btn { transition: none; }
+}
+
+/* keyboard focus: marker ring, never removed without replacement */
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.pop-btn:focus-visible { outline-offset: 4px; }
+input:focus-visible, select:focus-visible, textarea:focus-visible { outline-offset: 0; }
+
+@media (max-width: 768px) {
+  .pop-btn { min-height: 44px; }
+}
+
+/* logo marquee: transform only */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@layer components {
+  .marquee { animation: marquee 40s linear infinite; }
+  .marquee:hover { animation-play-state: paused; }
+}
+@media (prefers-reduced-motion: reduce) { .marquee { animation: none; } }
