@@ -11,6 +11,28 @@ import type { Sponsor } from "@/data/sponsors";
 export const GROUND_Y = -0.064;
 export const CAMERA = { position: [1.75, 0.78, 1.95] as [number, number, number], target: [-0.04, 0.1, -0.05] as [number, number, number], fov: 30 };
 
+/** Dev only: /?cam=x,y,z&look=x,y,z sets the camera for screenshots. */
+function DevCamera({ controls }: { controls: React.RefObject<OrbitControlsImpl | null> }) {
+  const { camera } = useThree();
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    const q = new URLSearchParams(window.location.search);
+    const cam = q.get("cam");
+    if (cam) {
+      const [x, y, z] = cam.split(",").map(Number);
+       
+      camera.position.set(x, y, z);
+    }
+    const look = q.get("look");
+    if (look && controls.current) {
+      const [x, y, z] = look.split(",").map(Number);
+      controls.current.target.set(x, y, z);
+      controls.current.update();
+    }
+  }, [camera, controls]);
+  return null;
+}
+
 /** Portrait phones: widen the fov so the whole car fits above the counter. */
 function ResponsiveFov({ base }: { base: number }) {
   const { camera, size } = useThree();
@@ -55,6 +77,7 @@ function Floor({ disc = true }: { disc?: boolean }) {
 
 type Props = {
   hoveredId: string | null;
+  selectedId?: string | null;
   onHover: (id: string | null) => void;
   onSelect: (id: string) => void;
   onReady?: () => void;
@@ -68,7 +91,7 @@ type Props = {
   className?: string;
 };
 
-export function CarScene({ hoveredId, onHover, onSelect, onReady, autoRotate = true, disc = true, spots, sponsors, overrides, children, controlsRef, className = "" }: Props) {
+export function CarScene({ hoveredId, selectedId = null, onHover, onSelect, onReady, autoRotate = true, disc = true, spots, sponsors, overrides, children, controlsRef, className = "" }: Props) {
   const localControls = useRef<OrbitControlsImpl | null>(null);
   const ref = controlsRef ?? localControls;
   const [rotating, setRotating] = useState(autoRotate);
@@ -87,6 +110,7 @@ export function CarScene({ hoveredId, onHover, onSelect, onReady, autoRotate = t
         }}
       >
         <ResponsiveFov base={CAMERA.fov} />
+        <DevCamera controls={ref} />
         <Suspense fallback={null}>
           <Studio />
           <directionalLight
@@ -102,7 +126,7 @@ export function CarScene({ hoveredId, onHover, onSelect, onReady, autoRotate = t
           </directionalLight>
           <directionalLight position={[-2.5, 1.5, -1.5]} intensity={0.6} color="#fff3c0" />
           <Floor disc={disc} />
-          <CarModel hoveredId={hoveredId} onHover={onHover} onSelect={onSelect} onReady={onReady} spots={spots} sponsors={sponsors} overrides={overrides} />
+          <CarModel hoveredId={hoveredId} selectedId={selectedId} onHover={onHover} onSelect={onSelect} onReady={onReady} spots={spots} sponsors={sponsors} overrides={overrides} />
           {children}
         </Suspense>
         <OrbitControls

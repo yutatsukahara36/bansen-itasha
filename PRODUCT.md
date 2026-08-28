@@ -30,7 +30,7 @@ Copy: direct, light, honest. 「約束はできません。ここは正直に書
 
 ## The signature interaction
 
-値札がめくれる. When a spot sells, its POP札 peels away and the sponsor logo is underneath. Every sale is a three-second video.
+区画が光る. The car is a parcel map: every pixel of the shell belongs to a zone, click one and exactly the surface you would own lights up. When a spot sells, the parcel turns paper-white and carries the sponsor logo.
 
 ## Anti-references
 
