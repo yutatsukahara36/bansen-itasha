@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import * as THREE from "three";
 import { SPOTS, GOAL, type Spot } from "@/data/spots";
@@ -41,6 +41,19 @@ export function PlaceTool() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [placeMode, setPlaceMode] = useState(false);
   const [status, setStatus] = useState<string>("");
+
+  // Enter toggles 配置モード (ignored while typing in a field)
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Enter") return;
+      const t = e.target as HTMLElement | null;
+      if (t && ["INPUT", "SELECT", "TEXTAREA", "BUTTON"].includes(t.tagName)) return;
+      e.preventDefault();
+      setPlaceMode((m) => !m);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   const sel = spots.find((s) => s.id === selectedId);
   const forSale = spots.filter((s) => s.forSale);
@@ -146,7 +159,7 @@ export function PlaceTool() {
             onClick={() => setPlaceMode((m) => !m)}
             className={`border-2 border-ink px-3 py-2 font-display text-[14px] active:scale-[0.98] ${placeMode ? "bg-yellow" : "bg-paper"}`}
           >
-            {placeMode ? "配置モード ON: 車をクリックで貼る" : "配置モード OFF: 値札クリックで選択"}
+            {placeMode ? "配置モード ON: 車をクリックで貼る" : "配置モード OFF: 値札クリックで選択"}（Enter）
           </button>
           <span className="border border-ink-soft bg-paper px-2 py-1 text-[12px] font-bold text-ink-soft">{status}</span>
         </div>
