@@ -110,8 +110,10 @@ export function PlaceTool() {
 
   const undoRef = useRef(() => {});
   const redoRef = useRef(() => {});
-  undoRef.current = undo;
-  redoRef.current = redo;
+  useEffect(() => {
+    undoRef.current = undo;
+    redoRef.current = redo;
+  });
 
   // Enter toggles 配置モード, Cmd/Ctrl+Z undoes, Shift+Cmd/Ctrl+Z redoes (ignored while typing in a field)
   useEffect(() => {
