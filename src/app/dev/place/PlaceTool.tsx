@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import * as THREE from "three";
 import { SPOTS, GOAL, type Spot } from "@/data/spots";
@@ -44,6 +44,38 @@ export function PlaceTool() {
   const [placeMode, setPlaceMode] = useState(false);
   const [status, setStatus] = useState<string>("");
   const [draftRestored, setDraftRestored] = useState(false);
+  const history = useRef<Spot[][]>([]);
+  const future = useRef<Spot[][]>([]);
+
+  /** Snapshot the current list, then apply a new one. Every edit goes through here so undo covers everything. */
+  const commit = (next: Spot[]) => {
+    history.current.push(clone(spots));
+    if (history.current.length > 200) history.current.shift();
+    future.current = [];
+    setSpots(next);
+  };
+
+  const undo = () => {
+    const prev = history.current.pop();
+    if (!prev) {
+      setStatus("戻せる操作がない");
+      return;
+    }
+    future.current.push(clone(spots));
+    setSpots(prev);
+    setStatus("戻した");
+  };
+
+  const redo = () => {
+    const next = future.current.pop();
+    if (!next) {
+      setStatus("やり直す操作がない");
+      return;
+    }
+    history.current.push(clone(spots));
+    setSpots(next);
+    setStatus("やり直した");
+  };
 
   // Draft autosave: every change goes to localStorage, and a reload (or hot reload) restores it.
   // Nothing is lost again unless you press 破棄 yourself.
@@ -71,17 +103,30 @@ export function PlaceTool() {
     try {
       localStorage.removeItem(DRAFT_KEY);
     } catch {}
-    setSpots(clone(SPOTS));
+    commit(clone(SPOTS));
     setDraftRestored(false);
     setStatus("spots.ts の状態に戻した");
   };
 
-  // Enter toggles 配置モード (ignored while typing in a field)
+  const undoRef = useRef(() => {});
+  const redoRef = useRef(() => {});
+  undoRef.current = undo;
+  redoRef.current = redo;
+
+  // Enter toggles 配置モード, Cmd/Ctrl+Z undoes, Shift+Cmd/Ctrl+Z redoes (ignored while typing in a field)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Enter") return;
       const t = e.target as HTMLElement | null;
-      if (t && ["INPUT", "SELECT", "TEXTAREA", "BUTTON"].includes(t.tagName)) return;
+      const typing = !!t && ["INPUT", "SELECT", "TEXTAREA"].includes(t.tagName);
+      if ((e.metaKey || e.ctrlKey) && (e.key === "z" || e.key === "Z")) {
+        if (typing) return; // native text undo in fields
+        e.preventDefault();
+        if (e.shiftKey) redoRef.current();
+        else undoRef.current();
+        return;
+      }
+      if (e.key !== "Enter") return;
+      if (typing || (t && t.tagName === "BUTTON")) return;
       e.preventDefault();
       setPlaceMode((m) => !m);
     };
@@ -94,13 +139,13 @@ export function PlaceTool() {
   const sum = forSale.reduce((a, s) => a + s.price, 0);
   const under100k = forSale.filter((s) => s.price < 100_000).length;
 
-  const update = (id: string, fn: (s: Spot) => void) =>
-    setSpots((cur) => {
-      const next = clone(cur);
-      const s = next.find((x) => x.id === id);
-      if (s) fn(s);
-      return next;
-    });
+  const update = (id: string, fn: (s: Spot) => void) => {
+    const next = clone(spots);
+    const s = next.find((x) => x.id === id);
+    if (!s) return;
+    fn(s);
+    commit(next);
+  };
 
   const onPlace = (hit: PlaceHit) => {
     if (!sel) return;
@@ -133,7 +178,7 @@ export function PlaceTool() {
       target: { mesh: "MAIN_BODY_2", material: "_MAIN_BODY" },
       decal: { position: [-0.04, 0.239, 0.42], rotation: [-1.4521, 0, 0], scale: [0.12, 0.084, 0.059] },
     };
-    setSpots((cur) => [...cur, fresh]);
+    commit([...clone(spots), fresh]);
     setSelectedId(id);
     setPlaceMode(true);
     setStatus("車をクリックして貼る場所を選ぶ");
@@ -142,7 +187,7 @@ export function PlaceTool() {
   const removeLabel = () => {
     if (!sel) return;
     if (!confirm(`「${sel.nameJa}」を消す?`)) return;
-    setSpots((cur) => cur.filter((s) => s.id !== sel.id));
+    commit(spots.filter((s) => s.id !== sel.id));
     setSelectedId(spots[0]?.id ?? "");
   };
 
@@ -217,6 +262,12 @@ export function PlaceTool() {
           </button>
           <button type="button" className="pop-btn ghost !px-3 !py-2 !text-[13px]" onClick={addLabel}>
             +追加
+          </button>
+          <button type="button" className="pop-btn ghost !px-3 !py-2 !text-[13px]" onClick={undo}>
+            ←戻す
+          </button>
+          <button type="button" className="pop-btn ghost !px-3 !py-2 !text-[13px]" onClick={redo}>
+            →
           </button>
           <button type="button" className="pop-btn ghost !px-3 !py-2 !text-[13px]" onClick={discardDraft}>
             破棄
