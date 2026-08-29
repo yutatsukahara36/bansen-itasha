@@ -53,7 +53,7 @@ No second accent. No gradients as decoration. No glass.
 - R3F `<Canvas dpr={[1,2]} shadows>`, `powerPreference: high-performance`.
 - Studio lighting from a custom `<Environment>` of Lightformers (no external HDR download) + `<ContactShadows>` tinted `--shadow`.
 - Car paint: `MeshPhysicalMaterial` white, metalness 0, roughness 0.3, clearcoat 1. Glass transparent 0.42. Body single-sided.
-- Spots: parcel map (2026-08-28 pivot, per Yuta). Every paintable triangle is classified into one of the 45 zones (`src/lib/zones.ts` rules + majority smoothing in `src/lib/zoneBuild.ts`). Unsold: tinted parcel (5 alternating yellows, greedy-coloured so neighbours differ) + screen-space ink borders (LineSegments2) + flat name/price label decal. Sold: paper fill + sponsor logo. LP zones: ink fill, 「非売品」 only. Click: zone turns full yellow, the rest dim. The old POP札 decals and the peel are retired.
+- Spots: drei `<Decal>` per spot on its target mesh. Unsold: POP札 canvas texture. Sold: sponsor logo texture with peel transition.
 - Floor: yellow disc under the car, radius 1.75, plus soft AO disc.
 - Camera A: position `[1.75, 0.78, 1.95]`, target `[-0.04, 0.10, -0.05]`, fov 30, widened on portrait.
 

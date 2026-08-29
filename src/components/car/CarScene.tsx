@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { Canvas, useThree } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, OrbitControls } from "@react-three/drei";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
-import { CarModel } from "./CarModel";
+import { CarModel, type PlaceHit } from "./CarModel";
 import type { Spot } from "@/data/spots";
 import type { Sponsor } from "@/data/sponsors";
 
@@ -77,7 +77,6 @@ function Floor({ disc = true }: { disc?: boolean }) {
 
 type Props = {
   hoveredId: string | null;
-  selectedId?: string | null;
   onHover: (id: string | null) => void;
   onSelect: (id: string) => void;
   onReady?: () => void;
@@ -85,13 +84,15 @@ type Props = {
   disc?: boolean;
   spots?: Spot[];
   sponsors?: Sponsor[];
+  onPlace?: (hit: PlaceHit) => void;
+  interactive?: boolean;
   overrides?: Record<string, Spot["decal"]>;
   children?: ReactNode; // extra scene content (dev gizmo)
   controlsRef?: React.RefObject<OrbitControlsImpl | null>;
   className?: string;
 };
 
-export function CarScene({ hoveredId, selectedId = null, onHover, onSelect, onReady, autoRotate = true, disc = true, spots, sponsors, overrides, children, controlsRef, className = "" }: Props) {
+export function CarScene({ hoveredId, onHover, onSelect, onReady, autoRotate = true, disc = true, spots, sponsors, overrides, onPlace, interactive = true, children, controlsRef, className = "" }: Props) {
   const localControls = useRef<OrbitControlsImpl | null>(null);
   const ref = controlsRef ?? localControls;
   const [rotating, setRotating] = useState(autoRotate);
@@ -126,7 +127,7 @@ export function CarScene({ hoveredId, selectedId = null, onHover, onSelect, onRe
           </directionalLight>
           <directionalLight position={[-2.5, 1.5, -1.5]} intensity={0.6} color="#fff3c0" />
           <Floor disc={disc} />
-          <CarModel hoveredId={hoveredId} selectedId={selectedId} onHover={onHover} onSelect={onSelect} onReady={onReady} spots={spots} sponsors={sponsors} overrides={overrides} />
+          <CarModel hoveredId={hoveredId} onHover={onHover} onSelect={onSelect} onReady={onReady} spots={spots} sponsors={sponsors} overrides={overrides} onPlace={onPlace} interactive={interactive} />
           {children}
         </Suspense>
         <OrbitControls

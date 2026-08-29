@@ -39,7 +39,7 @@ export function Hero() {
 
   return (
     <section className="relative min-h-[calc(100dvh-60px)] w-full overflow-hidden">
-      <CarScene hoveredId={hoveredId} selectedId={selectedId} onHover={setHoveredId} onSelect={setSelectedId} onReady={onReady} sponsors={sponsors} />
+      <CarScene hoveredId={hoveredId} onHover={setHoveredId} onSelect={setSelectedId} onReady={onReady} sponsors={sponsors} />
       <noscript>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/og.jpg" alt="値札だらけのデジタル番宣痛車" className="absolute inset-0 h-full w-full object-cover" />
@@ -67,7 +67,7 @@ export function Hero() {
 
       <div className="pointer-events-none absolute bottom-[262px] left-[34px] z-[10] flex gap-3.5 text-[12px] font-bold text-ink-soft max-md:hidden">
         <span className="hint-dot">ドラッグで回せます</span>
-        <span className="hint-dot">区画をクリック</span>
+        <span className="hint-dot">値札をクリック</span>
       </div>
 
       <ProgressOverlay p={p} className="absolute bottom-10 left-8 z-[10] max-md:bottom-4 max-md:left-4" />
