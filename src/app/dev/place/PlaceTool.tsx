@@ -35,12 +35,46 @@ function tiltBy(rotation: [number, number, number], deltaDeg: number): [number, 
 
 const depthFor = (w: number, h: number) => round(Math.max(0.04, Math.min(w, h) * 0.7));
 
+const DRAFT_KEY = "place-draft-v1";
+
 export function PlaceTool() {
   const [spots, setSpots] = useState<Spot[]>(() => clone(SPOTS));
   const [selectedId, setSelectedId] = useState<string>(SPOTS[0].id);
   const [hovered, setHovered] = useState<string | null>(null);
   const [placeMode, setPlaceMode] = useState(false);
   const [status, setStatus] = useState<string>("");
+  const [draftRestored, setDraftRestored] = useState(false);
+
+  // Draft autosave: every change goes to localStorage, and a reload (or hot reload) restores it.
+  // Nothing is lost again unless you press 破棄 yourself.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (!raw) return;
+      const draft = JSON.parse(raw) as Spot[];
+      if (Array.isArray(draft) && draft.length && JSON.stringify(draft) !== JSON.stringify(SPOTS)) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setSpots(draft);
+        setDraftRestored(true);
+        setStatus("保存していない下書きを復元した");
+      }
+    } catch {}
+  }, []);
+  useEffect(() => {
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(spots));
+    } catch {}
+  }, [spots]);
+
+  const discardDraft = () => {
+    if (!confirm("下書きを捨てて spots.ts の状態に戻す?")) return;
+    try {
+      localStorage.removeItem(DRAFT_KEY);
+    } catch {}
+    setSpots(clone(SPOTS));
+    setDraftRestored(false);
+    setStatus("spots.ts の状態に戻した");
+  };
 
   // Enter toggles 配置モード (ignored while typing in a field)
   useEffect(() => {
@@ -123,6 +157,7 @@ export function PlaceTool() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? res.status);
       setStatus(`保存した（${json.count}枠 / 販売合計 ${yen(json.forSaleSum)}）。ホットリロードで反映されます`);
+      setDraftRestored(false);
     } catch (e) {
       setStatus("保存に失敗: " + String(e));
     }
@@ -162,6 +197,7 @@ export function PlaceTool() {
             {placeMode ? "配置モード ON: 車をクリックで貼る" : "配置モード OFF: 値札クリックで選択"}（Enter）
           </button>
           <span className="border border-ink-soft bg-paper px-2 py-1 text-[12px] font-bold text-ink-soft">{status}</span>
+          {draftRestored && <span className="border-2 border-ink bg-yellow px-2 py-1 text-[12px] font-black">未保存の下書き</span>}
         </div>
         <div
           className={`absolute bottom-3 left-3 z-[10] border-2 border-ink px-3 py-2 text-[13px] font-black ${sum === GOAL ? "bg-paper" : "bg-ink text-yellow"}`}
@@ -181,6 +217,9 @@ export function PlaceTool() {
           </button>
           <button type="button" className="pop-btn ghost !px-3 !py-2 !text-[13px]" onClick={addLabel}>
             +追加
+          </button>
+          <button type="button" className="pop-btn ghost !px-3 !py-2 !text-[13px]" onClick={discardDraft}>
+            破棄
           </button>
         </div>
 
