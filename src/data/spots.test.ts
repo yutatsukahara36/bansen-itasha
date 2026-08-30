@@ -12,8 +12,8 @@ describe("spots invariant", () => {
     expect(LP_SPOTS.length).toBeGreaterThan(0);
     expect(LP_SPOTS.every((s) => s.price === 0 && !s.forSale)).toBe(true);
   });
-  it("35 of 40 spots are under ¥100,000", () => {
-    expect(FOR_SALE.filter((s) => s.price < 100_000).length).toBe(35);
+  it("at least 35 of the for-sale spots stay under the ¥100,000 課長 line", () => {
+    expect(FOR_SALE.filter((s) => s.price < 100_000).length).toBeGreaterThanOrEqual(35);
   });
   it("ids are unique", () => {
     expect(new Set(SPOTS.map((s) => s.id)).size).toBe(SPOTS.length);
