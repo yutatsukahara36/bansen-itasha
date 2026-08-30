@@ -110,9 +110,11 @@ export function PlaceTool() {
 
   const undoRef = useRef(() => {});
   const redoRef = useRef(() => {});
+  const addRef = useRef(() => {});
   useEffect(() => {
     undoRef.current = undo;
     redoRef.current = redo;
+    addRef.current = addLabel;
   });
 
   // Enter toggles 配置モード, Cmd/Ctrl+Z undoes, Shift+Cmd/Ctrl+Z redoes (ignored while typing in a field)
@@ -125,6 +127,12 @@ export function PlaceTool() {
         e.preventDefault();
         if (e.shiftKey) redoRef.current();
         else undoRef.current();
+        return;
+      }
+      if ((e.key === "n" || e.key === "N") && !e.metaKey && !e.ctrlKey) {
+        if (typing) return;
+        e.preventDefault();
+        addRef.current();
         return;
       }
       if (e.key !== "Enter") return;
@@ -263,7 +271,7 @@ export function PlaceTool() {
             JSONコピー
           </button>
           <button type="button" className="pop-btn ghost !px-3 !py-2 !text-[13px]" onClick={addLabel}>
-            +追加
+            +追加（N）
           </button>
           <button type="button" className="pop-btn ghost !px-3 !py-2 !text-[13px]" onClick={undo}>
             ←戻す
