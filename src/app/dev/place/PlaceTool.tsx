@@ -111,11 +111,6 @@ export function PlaceTool() {
   const undoRef = useRef(() => {});
   const redoRef = useRef(() => {});
   const addRef = useRef(() => {});
-  useEffect(() => {
-    undoRef.current = undo;
-    redoRef.current = redo;
-    addRef.current = addLabel;
-  });
 
   // Enter toggles 配置モード, Cmd/Ctrl+Z undoes, Shift+Cmd/Ctrl+Z redoes (ignored while typing in a field)
   useEffect(() => {
@@ -193,6 +188,12 @@ export function PlaceTool() {
     setPlaceMode(true);
     setStatus("車をクリックして貼る場所を選ぶ");
   };
+
+  useEffect(() => {
+    undoRef.current = undo;
+    redoRef.current = redo;
+    addRef.current = addLabel;
+  });
 
   const removeLabel = () => {
     if (!sel) return;
