@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { SPOTS } from "@/data/spots";
 import { SPONSORS } from "@/data/sponsors";
-import { progress } from "@/lib/format";
+import { progress, SPOT_COUNT } from "@/lib/format";
 import { ProgressOverlay } from "@/components/car/ProgressOverlay";
 
 const CarScene = dynamic(() => import("@/components/car/CarScene").then((m) => m.CarScene), { ssr: false });
@@ -22,7 +22,7 @@ export function OgStage() {
           番宣痛車、作ります。
         </h1>
         <p className="mt-3 text-[18px] font-bold text-ink-soft">
-          <span className="marker-hl">全40枠</span>、¥20,000から。企業も、ブランドも、個人も。
+          <span className="marker-hl">全{SPOT_COUNT}枠</span>、¥20,000から。企業も、ブランドも、個人も。
         </p>
       </div>
       <ProgressOverlay p={p} className="absolute bottom-8 left-10 z-[10] scale-[0.85] origin-bottom-left" />

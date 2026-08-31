@@ -1,7 +1,12 @@
-import { GOAL, SPOTS, type Spot } from "@/data/spots";
+import { FOR_SALE, GOAL, SPOTS, type Spot } from "@/data/spots";
 import type { Sponsor } from "@/data/sponsors";
 
 export const yen = (n: number) => "¥" + n.toLocaleString("ja-JP");
+
+// copy-facing counts, derived from the data so edited layouts never drift from the text
+export const SPOT_COUNT = FOR_SALE.length;
+export const UNDER_100K_COUNT = FOR_SALE.filter((s) => s.price < 100_000).length;
+export const MIN_PRICE = Math.min(...FOR_SALE.map((s) => s.price));
 
 export type Progress = {
   raised: number;

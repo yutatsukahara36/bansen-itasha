@@ -7,10 +7,11 @@ import { PriceTable } from "@/components/sponsor/PriceTable";
 import { Faq } from "@/components/sponsor/Faq";
 import { InquiryForm } from "@/components/sponsor/InquiryForm";
 import { spotById } from "@/data/spots";
+import { SPOT_COUNT, UNDER_100K_COUNT } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "宣伝したい方はこちら / デジタル番宣痛車",
-  description: "全40枠の価格表、よくある質問、お問い合わせ。企業も、ブランドも、個人も。",
+  description: `全${SPOT_COUNT}枠の価格表、よくある質問、お問い合わせ。企業も、ブランドも、個人も。`,
 };
 
 export default async function SponsorPage({ searchParams }: { searchParams: Promise<{ spot?: string }> }) {
@@ -24,7 +25,7 @@ export default async function SponsorPage({ searchParams }: { searchParams: Prom
           <Reveal>
             <h1 className="max-w-[16em] font-display text-[clamp(34px,5vw,64px)] leading-[1.1]">宣伝したい方はこちら</h1>
             <p className="mt-6 max-w-[40em] text-[18px] font-bold text-ink-soft">
-              企業も、ブランドも、個人も。全40枠、固定価格、先着、恒久掲載。40枠中35枠が¥100,000未満なので、面白がった担当者がその場で決められます。
+              企業も、ブランドも、個人も。全{SPOT_COUNT}枠、固定価格、先着、恒久掲載。{SPOT_COUNT}枠中{UNDER_100K_COUNT}枠が¥100,000未満なので、面白がった担当者がその場で決められます。
             </p>
           </Reveal>
         </Section>

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { SPOTS, spotById } from "@/data/spots";
 import { SPONSORS, type Sponsor } from "@/data/sponsors";
-import { progress } from "@/lib/format";
+import { progress, SPOT_COUNT } from "@/lib/format";
 import { ProgressOverlay } from "@/components/car/ProgressOverlay";
 import { SpotPanel } from "@/components/car/SpotPanel";
 import { Button } from "@/components/ui/Button";
@@ -61,7 +61,7 @@ export function Hero() {
           番宣痛車、作ります。
         </h1>
         <p className="mt-3.5 max-w-[28em] text-[16px] font-bold text-ink-soft max-md:text-[13px]">
-          ネット上の痛車に<span className="marker-hl">全40枠</span>。¥20,000から。企業も、ブランドも、個人も。埋まったら、この姿のまま実車にします。
+          ネット上の痛車に<span className="marker-hl">全{SPOT_COUNT}枠</span>。¥20,000から。企業も、ブランドも、個人も。埋まったら、この姿のまま実車にします。
         </p>
       </div>
 

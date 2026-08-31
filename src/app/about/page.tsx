@@ -4,6 +4,7 @@ import { Footer } from "@/components/sections/Footer";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
+import { SPOT_COUNT } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "痛車とは？ / デジタル番宣痛車",
@@ -67,7 +68,7 @@ export default function AboutPage() {
             <Block title="本当に作るのか">
               <p className="font-black">約束はできません。ここは正直に書きます。</p>
               <p>
-                実車をつくるのは、全40枠が埋まり、集まった金額が¥2,000,000に到達した場合だけです。到達しなければ、実車はつくりません。その場合でも、デジタル痛車上の掲載枠はそのまま残ります。
+                実車をつくるのは、全{SPOT_COUNT}枠が埋まり、集まった金額が¥2,000,000に到達した場合だけです。到達しなければ、実車はつくりません。その場合でも、デジタル痛車上の掲載枠はそのまま残ります。
               </p>
               <p>
                 買っていただくのは、デジタル痛車上の掲載枠と、そこから生まれる露出です。実車化は、条件を満たしたときに起きるおまけです。作れなかったら、それはそれで面白い企画だったということにしてください。

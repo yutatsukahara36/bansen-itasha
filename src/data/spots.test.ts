@@ -3,8 +3,8 @@ import { FOR_SALE, GOAL, LP_SPOTS, SPOTS } from "./spots";
 import { progress } from "@/lib/format";
 
 describe("spots invariant", () => {
-  it("40 for-sale spots sum to exactly ¥2,000,000", () => {
-    expect(FOR_SALE.length).toBe(40);
+  it("for-sale spots sum to exactly ¥2,000,000", () => {
+    expect(FOR_SALE.length).toBeGreaterThanOrEqual(40);
     expect(FOR_SALE.reduce((a, s) => a + s.price, 0)).toBe(2_000_000);
     expect(GOAL).toBe(2_000_000);
   });
