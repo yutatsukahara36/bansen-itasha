@@ -12,8 +12,8 @@ export function CtaBand() {
           <Button href="/sponsor" size="lg" variant="ghost" rotate={-1}>
             宣伝したい方はこちら
           </Button>
-          <Button href="/about" size="lg" variant="ghost" rotate={1}>
-            痛車とは？
+          <Button href="/#story" size="lg" variant="ghost" rotate={1}>
+            番宣痛車とは
           </Button>
         </div>
       </Reveal>

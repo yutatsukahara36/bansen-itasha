@@ -31,7 +31,9 @@
   --z-grain: 30;
 }
 
-html { background: var(--paper); }
+html { background: var(--paper); scroll-behavior: smooth; }
+[id] { scroll-margin-top: 84px; } /* clears the sticky header when a #anchor link (痛車とは？) lands on it */
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   background: var(--paper);
   color: var(--ink);

@@ -1,4 +1,4 @@
-import { SPOTS } from "@/data/spots";
+import { LP_SPOTS, SPOTS } from "@/data/spots";
 import { TIER_LABEL, type Tier } from "@/data/tiers";
 import type { Spot } from "@/data/spots";
 import { yen } from "@/lib/format";
@@ -22,6 +22,7 @@ const BLOCK: Record<Tier, { span: string; size: "sm" | "md" | "lg"; bg: string; 
 };
 
 function priceRange(spots: Spot[]) {
+  if (!spots.length) return "";
   const prices = [...new Set(spots.map((s) => s.price))].sort((a, b) => a - b);
   return prices.length === 1 ? yen(prices[0]) : `${yen(prices[0])}〜${yen(prices[prices.length - 1])}`;
 }
@@ -34,6 +35,7 @@ export function PriceTable() {
       {tiers.map((t, ti) => {
         const b = BLOCK[t];
         const spots = SPOTS.filter((s) => s.tier === t);
+        if (!spots.length) return null; // a tier can empty out as prices get rebalanced; skip it rather than render a broken block
         const remaining = spots.filter((s) => !sold.has(s.id)).length;
         return (
           <Reveal key={t} delay={ti * 0.05} className={`${b.span} ${b.bg} border-[3px] border-ink p-5 md:p-6`}>
@@ -63,7 +65,7 @@ export function PriceTable() {
       })}
       <Reveal className="md:col-span-12 border-[3px] border-ink bg-ink p-5 text-yellow md:p-6">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h3 className="font-display text-[26px] leading-none">非売品 5枠</h3>
+          <h3 className="font-display text-[26px] leading-none">非売品 {LP_SPOTS.length}枠</h3>
         </div>
         <p className="mt-2 max-w-[48em] text-[14px] font-bold text-paper">
           お金では買えない小さな枠が5つあります。最初に動いてくださった方に無償でお渡しします。

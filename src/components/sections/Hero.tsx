@@ -76,8 +76,8 @@ export function Hero() {
         <Button href="/sponsor" size="lg" rotate={-1.2}>
           宣伝したい方はこちら
         </Button>
-        <Button href="/about" size="lg" variant="ghost" rotate={0.8}>
-          痛車とは？
+        <Button href="/#story" size="lg" variant="ghost" rotate={0.8}>
+          番宣痛車とは
         </Button>
       </div>
 

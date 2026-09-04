@@ -48,9 +48,6 @@ export default async function SponsorPage({ searchParams }: { searchParams: Prom
           <div className="grid gap-10 md:grid-cols-[1fr_1.4fr] md:gap-16">
             <Reveal>
               <h2 className="font-display text-[clamp(28px,3.4vw,44px)] leading-[1.15]">お問い合わせ</h2>
-              <p className="mt-4 max-w-[30em] text-[16px] font-bold">
-                決済はまだありません。まず話しましょう。御社のロゴを貼った痛車の画像を作ってお返しします。想像させるより、見せた方が早いので。
-              </p>
             </Reveal>
             <Reveal delay={0.1}>
               <InquiryForm initialSpot={initialSpot || ""} />

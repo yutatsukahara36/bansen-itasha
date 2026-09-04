@@ -9,8 +9,8 @@ export function Header() {
         <small className="font-body text-[12px] font-bold text-ink-soft max-md:hidden">誰でも宣伝できる痛車、つくります</small>
       </Link>
       <nav className="flex gap-2.5 max-md:gap-1.5">
-        <Button href="/about" variant="ghost" rotate={-1} className="max-md:hidden">
-          痛車とは？
+        <Button href="/#story" variant="ghost" rotate={-1} className="max-md:hidden">
+          番宣痛車とは
         </Button>
         <Button href="/sponsor" rotate={1} className="max-md:!text-[13px] max-md:!px-3 max-md:!py-3">
           宣伝したい方はこちら
